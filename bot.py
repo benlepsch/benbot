@@ -16,6 +16,5 @@ class SwagBot(discord.Client):
         if message.author.id == self.user.id:
             return
 
-
 swagger = SwagBot()
 swagger.run(token)
