@@ -8,10 +8,12 @@ class SwagBot(discord.Client):
         print(self.user.id)
         print('-----------')
 
-        game = discord.Game('ballin\'')
+        game = discord.Game('VALORANT')
         await swagger.change_presence(status=discord.Status.online, activity=game)
 
-     
+        inp = input('> ')
+
+    
     async def on_message(self, message):
         if message.author.id == self.user.id:
             return
