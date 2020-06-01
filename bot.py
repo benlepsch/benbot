@@ -8,9 +8,6 @@ class SwagBot(discord.Client):
         print(self.user.id)
         print('-----------')
 
-        game = discord.Game('VALORANT')
-        await swagger.change_presence(status=discord.Status.online, activity=game)
-
         # for talking :)
         # i checked none of these are already defined
         self.selected_server = None
