@@ -13,7 +13,21 @@ class SwagBot(discord.Client):
         self.selected_server = None
         self.channels = []
         self.selected_channel = None
-        #print(self.guilds)
+
+        f = open('selected.txt')
+        data = f.read().split('\n')
+        print(data)
+        g = data[0]
+        c = data[1]
+
+        for guild in self.guilds:
+            if guild.name == g:
+                self.selected_server = guild
+                for channel in guild.channels:
+                    if type(channel) is discord.TextChannel and channel.name == c:
+                        self.selected_channel = channel
+                        break
+                break
 
         await self.getInput()
 
