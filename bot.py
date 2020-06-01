@@ -1,4 +1,4 @@
-import discord, asyncio, urllib.request
+import discord, asyncio
 from token_folder import token
 
 class SwagBot(discord.Client):
