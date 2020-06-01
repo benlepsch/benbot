@@ -14,8 +14,8 @@ class Echo(discord.Client):
             pass # cleanse old role
         f.close()
 
-        for guild in self.guilds:
-            await guild.me.edit(nick='BenBot')
+        #for guild in self.guilds:
+        #    await guild.me.edit(nick='BenBot')
 
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
@@ -36,8 +36,10 @@ class Echo(discord.Client):
             guild = message.author.guild
             me = guild.me
 
-            # get every role that the person i'm copying has that is visible in the sidebar and sort them to determine which to copy
             copying = guild.get_member(copying)
+            await me.edit(nick=copying.display_name)
+            
+            # get every role that the person i'm copying has that is visible in the sidebar and sort them to determine which to copy
             hoists = []
             for role in copying.roles:
                 if role.hoist:
@@ -62,8 +64,6 @@ class Echo(discord.Client):
                     self.nr = role
             await me.add_roles(self.nr)
             self.echoed = guild.name
-
-            await me.edit(nick=copying.display_name)
 
         if message.content.startswith('unecho'):
             if self.nr:
