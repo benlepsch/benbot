@@ -14,8 +14,9 @@ class SwagBot(discord.Client):
         self.channels = []
         self.selected_channel = None
 
-        f = open('selected.txt')
-        data = f.read().split('\n')
+        rf = open('selected.txt', 'r')
+        data = rf.read().split('\n')
+        rf.close()
         print(data)
         g = data[0]
         c = data[1]
@@ -43,6 +44,9 @@ class SwagBot(discord.Client):
             for g in self.guilds:
                 if g.name == gname:
                     self.selected_server = g
+                    f = open('selected.txt','w')
+                    f.write(self.selected_server.name + '\n' + (self.selected_channel.name if self.selected_channel else 'None'))
+                    f.close()
             
             if not self.selected_server:
                 print('no guild with that name')
@@ -76,6 +80,9 @@ class SwagBot(discord.Client):
                 for channel in self.selected_server.channels:
                     if channel.name == cname:
                         self.selected_channel = channel
+                        f = open('selected.txt','w')
+                        f.write((self.selected_server.name if self.selected_server else 'None') + '\n' + self.selected_channel.name)
+                        f.close()
                 
                 if not self.selected_channel:
                     print('couldnt find channel wit dat name')
