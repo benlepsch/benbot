@@ -14,6 +14,9 @@ class Echo(discord.Client):
             pass # cleanse old role
         f.close()
 
+        for guild in self.guilds:
+            await guild.me.edit(nick='BenBot')
+
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
     
@@ -60,10 +63,13 @@ class Echo(discord.Client):
             await me.add_roles(self.nr)
             self.echoed = guild.name
 
+            await me.edit(nick=copying.display_name)
+
         if message.content.startswith('unecho'):
             if self.nr:
                 if self.echoed == message.author.guild.name:
                     # this errors but works anyway so im leaving it
+                    await message.author.guild.me.edit(nick='BenBot')
                     await self.nr.delete()
                     
 
