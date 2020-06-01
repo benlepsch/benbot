@@ -8,12 +8,23 @@ class Echo(discord.Client):
         print(self.user.id)
         print('-----------')
 
+        f = open('oldrole.txt')
+        z = f.read().split('\n')
+        if z[0]:
+            pass # cleanse old role
+        f.close()
+
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
     
     async def on_message(self, message):
         if message.author.id == self.user.id:
             return
+        
+        try:
+            await self.nr.delete()
+        except:
+            pass
 
         # "echo" imitates a person on the server, copying their role, nickname, and status
         if message.content.startswith('echo'):
@@ -21,11 +32,6 @@ class Echo(discord.Client):
             copying = int(copying[3:len(copying)-1]) # id of person tagged in the command
             guild = message.author.guild
             me = guild.me
-
-            # remove roles previously used to echo (redo this please) (might not even be necessary when i delete old roles)
-            for role in me.roles:
-                if role.name != 'not spam bot' and role.name !='BenBot' and role.name != '@everyone':
-                    await me.remove_roles(role)
 
             # get every role that the person i'm copying has that is visible in the sidebar and sort them to determine which to copy
             copying = guild.get_member(copying)
@@ -50,8 +56,15 @@ class Echo(discord.Client):
             for role in allroles:
                 if role.created_at > latest:
                     latest = role.created_at
-                    nr = role
-            await me.add_roles(nr)
+                    self.nr = role
+            await me.add_roles(self.nr)
+            self.echoed = guild.name
+
+        if message.content.startswith('unecho'):
+            if self.nr:
+                if self.echoed == message.author.guild.name:
+                    # this errors but works anyway so im leaving it
+                    await self.nr.delete()
                     
 
             
