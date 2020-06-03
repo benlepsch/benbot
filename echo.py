@@ -57,11 +57,15 @@ class Echo(discord.Client):
             # edit the "benbot" role in the server to be the name/colour of the person im echoing
             for role in me.roles:
                 if role.name != 'not spam bot' and role.name != '@everyone':
-                    await role.edit(name=tr.name, colour=tr.colour, hoist=True)
+                    await role.edit(name=tr.name, colour=tr.colour)
+                    await role.edit(hoist=True)
                     break
 
         if message.content.startswith('unecho'):
-           pass
+           for role in message.author.guild.me.roles:
+               if role.name != 'not spam bot' and role.name != '@everyone':
+                   await role.edit(name='BenBot', colour=discord.Colour(5).lighter_grey(), hoist=False)
+                   await message.author.guild.me.edit(nick='BenBot')
 
 
             
