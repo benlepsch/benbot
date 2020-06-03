@@ -8,17 +8,6 @@ class Echo(discord.Client):
         print(self.user.id)
         print('-----------')
 
-        f = open('oldrole.txt')
-        z = f.read().split('\n')
-        if z[0]:
-            pass # cleanse old role
-        f.close()
-
-        #for guild in self.guilds:
-        #    await guild.me.edit(nick='BenBot')
-
-        
-
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
     
@@ -26,13 +15,14 @@ class Echo(discord.Client):
         if message.author.id == self.user.id:
             return
         
-        try:
-            await self.nr.delete()
-        except:
-            pass
 
         # "echo" imitates a person on the server, copying their role, nickname, and status
         if message.content.startswith('echo'):
+            for role in message.author.guild.me.roles:
+               if role.name != 'not spam bot' and role.name != '@everyone':
+                   await role.edit(name='BenBot', colour=discord.Colour(5).lighter_grey(), hoist=False)
+                   await message.author.guild.me.edit(nick='BenBot')
+
             copying = message.content.split()[1]
             copying = int(copying[3:len(copying)-1]) # id of person tagged in the command
             guild = message.author.guild
