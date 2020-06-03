@@ -17,6 +17,8 @@ class Echo(discord.Client):
         #for guild in self.guilds:
         #    await guild.me.edit(nick='BenBot')
 
+        
+
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
     
@@ -52,26 +54,15 @@ class Echo(discord.Client):
                     top = role.position
                     tr = role
 
-            # make a new role with the same color/name as the top role
-            # i dont assign the same role because for some reason i got permissions errors when i did that 
-            # despite giving the bot "manage roles" permission idk
-            await guild.create_role(name=tr.name,colour=tr.colour,hoist=True)
-            allroles = guild.roles
-            latest = allroles[0].created_at
-            for role in allroles:
-                if role.created_at > latest:
-                    latest = role.created_at
-                    self.nr = role
-            await me.add_roles(self.nr)
-            self.echoed = guild.name
+            # edit the "benbot" role in the server to be the name/colour of the person im echoing
+            for role in me.roles:
+                if role.name != 'not spam bot' and role.name != '@everyone':
+                    await role.edit(name=tr.name, colour=tr.colour, hoist=True)
+                    break
 
         if message.content.startswith('unecho'):
-            if self.nr:
-                if self.echoed == message.author.guild.name:
-                    # this errors but works anyway so im leaving it
-                    await message.author.guild.me.edit(nick='BenBot')
-                    await self.nr.delete()
-                    
+           pass
+
 
             
 
