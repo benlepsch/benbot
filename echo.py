@@ -8,12 +8,6 @@ class Echo(discord.Client):
         print(self.user.id)
         print('-----------')
 
-        # this works but discord limits the amount of times you can change pfp
-        # pfp = open('original_pfp.png','rb')
-        # byte = pfp.read()
-        # pfp.close()
-        # await echo.user.edit(password=None,avatar=byte)
-
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
     
@@ -67,22 +61,25 @@ class Echo(discord.Client):
             # this is insane
             # this also doesnt work
 
-            # url = copying.avatar_url
-            # with open('profile.jpg', 'wb') as handle:
-            #     response = requests.get(url, stream=True)
+            url = copying.avatar_url
+            with open('profile.png', 'wb') as handle:
+                response = requests.get(url, stream=True)
 
-            #     if not response.ok:
-            #         print(response)
+                if not response.ok:
+                    print(response)
 
-            #     for block in response.iter_content(1024):
-            #         if not block:
-            #             break
+                for block in response.iter_content(1024):
+                    if not block:
+                        break
 
-            #         handle.write(block)
-            # pic = open('profile.jpg','rb')
-            # b = pic.read()
-            # pic.close()
-            # await echo.user.edit(password=None, avatar=pic)
+                    handle.write(block)
+            pic = open('profile.png','rb')
+            b = pic.read()
+            pic.close()
+            # try:
+            #     await echo.user.edit(password=None, avatar=pic)
+            # except:
+            #     await message.channel.send('cant change profile pic rn :(')
 
         if message.content.startswith('unecho'):
            for role in message.author.guild.me.roles:
@@ -93,10 +90,10 @@ class Echo(discord.Client):
                     byte = pfp.read()
                     pfp.close()
 
-                    try:
-                        await echo.user.edit(password=None,avatar=byte)
-                    except:
-                        await message.channel.send('cant chagne profile pic right now :(')
+                    # try:
+                    #     await echo.user.edit(password=None,avatar=byte)
+                    # except:
+                    #     await message.channel.send('cant chagne profile pic right now :(')
 
 
             
