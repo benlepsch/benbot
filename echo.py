@@ -8,7 +8,7 @@ class Echo(discord.Client):
         print(self.user.id)
         print('-----------')
 
-        game = discord.Game('VALORANT')
+        game = discord.Game('with Asher\'s balls')
         await echo.change_presence(status=discord.Status.online, activity=game)
     
     async def on_message(self, message):
@@ -56,6 +56,11 @@ class Echo(discord.Client):
                         await role.edit(hoist=True)
                         break
             
+            # set activity to users activity
+            # this actually doesnt work if it's a custom activity because bots cant use custom activities
+            await echo.change_presence(status=copying.status,activity=copying.activity)
+            print(type(copying.activity))
+
             # next
             # GET PROFILE PICTURE
             # this is insane
@@ -86,6 +91,8 @@ class Echo(discord.Client):
                if role.name != 'not spam bot' and role.name != '@everyone':
                     await role.edit(name='BenBot', colour=discord.Colour(5).lighter_grey(), hoist=False)
                     await message.author.guild.me.edit(nick='BenBot')
+                    game = discord.Game('with Asher\'s balls')
+                    await echo.change_presence(status=discord.Status.online, activity=game)
                     pfp = open('original_pfp.png','rb')
                     byte = pfp.read()
                     pfp.close()
@@ -94,6 +101,9 @@ class Echo(discord.Client):
                     #     await echo.user.edit(password=None,avatar=byte)
                     # except:
                     #     await message.channel.send('cant chagne profile pic right now :(')
+        
+        if message.content.startswith('activity'):
+            await message.channel.send(message.author.activity)
 
 
             
