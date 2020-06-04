@@ -101,9 +101,6 @@ class Echo(discord.Client):
                     #     await echo.user.edit(password=None,avatar=byte)
                     # except:
                     #     await message.channel.send('cant chagne profile pic right now :(')
-        
-        if message.content.startswith('activity'):
-            await message.channel.send(message.author.activity)
 
 
             
