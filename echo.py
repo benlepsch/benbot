@@ -1,4 +1,4 @@
-import discord, asyncio
+import discord, asyncio, requests
 from token_folder import token
 
 class Echo(discord.Client):
@@ -8,10 +8,11 @@ class Echo(discord.Client):
         print(self.user.id)
         print('-----------')
 
-        pfp = open('original_pfp.png','rb')
-        byte = pfp.read()
-        pfp.close()
-        await echo.user.edit(password=None,avatar=byte)
+        # this works but discord limits the amount of times you can change pfp
+        # pfp = open('original_pfp.png','rb')
+        # byte = pfp.read()
+        # pfp.close()
+        # await echo.user.edit(password=None,avatar=byte)
 
         game = discord.Game('VALORANT')
         await echo.change_presence(status=discord.Status.online, activity=game)
@@ -64,14 +65,38 @@ class Echo(discord.Client):
             # next
             # GET PROFILE PICTURE
             # this is insane
+            # this also doesnt work
 
-            await message.channel.send(copying.avatar_url)
+            # url = copying.avatar_url
+            # with open('profile.jpg', 'wb') as handle:
+            #     response = requests.get(url, stream=True)
+
+            #     if not response.ok:
+            #         print(response)
+
+            #     for block in response.iter_content(1024):
+            #         if not block:
+            #             break
+
+            #         handle.write(block)
+            # pic = open('profile.jpg','rb')
+            # b = pic.read()
+            # pic.close()
+            # await echo.user.edit(password=None, avatar=pic)
 
         if message.content.startswith('unecho'):
            for role in message.author.guild.me.roles:
                if role.name != 'not spam bot' and role.name != '@everyone':
-                   await role.edit(name='BenBot', colour=discord.Colour(5).lighter_grey(), hoist=False)
-                   await message.author.guild.me.edit(nick='BenBot')
+                    await role.edit(name='BenBot', colour=discord.Colour(5).lighter_grey(), hoist=False)
+                    await message.author.guild.me.edit(nick='BenBot')
+                    pfp = open('original_pfp.png','rb')
+                    byte = pfp.read()
+                    pfp.close()
+
+                    try:
+                        await echo.user.edit(password=None,avatar=byte)
+                    except:
+                        await message.channel.send('cant chagne profile pic right now :(')
 
 
             
