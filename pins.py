@@ -50,6 +50,9 @@ class PinClient(discord.Client):
         if message.author.id == self.user.id:
             return
         
+        if message.content.startswith('..online'):
+            await message.channel.send('pin bot online')
+        
         # # test method to make sure attachments/gifs work
         # if message.content.startswith('..resend'):
         #     # format: ..resend <message id>
