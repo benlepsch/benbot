@@ -83,20 +83,38 @@ class PinClient(discord.Client):
             msg = await message.channel.fetch_message(m_id)
 
             attachment = None
+            a_type = ''
             if len(msg.attachments) != 0:
-                attachment = msg.attachments[0].url
+                attachment = msg.attachments[0]
+                a_type = attachment.content_type.split('/')[0]
+
             
             sending_msg = '''{}\n\n[message link]({})'''.format(msg.content, msg.jump_url)
 
             embed = discord.Embed()
             embed.add_field(name=msg.author.display_name, value=sending_msg)
 
-            if attachment is not None:
+            if attachment is not None and a_type == 'image':
                 embed.set_image(url=attachment)
             
             embed.set_footer(text='sent in channel {}'.format(msg.channel.name))
 
-            await self.pinning_channel.send(embed=embed)
+            if a_type == 'video':
+                await self.pinning_channel.send(embed=embed, files=[await attachment.to_file()])
+            else:
+                await self.pinning_channel.send(embed=embed)
+        
+        '''
+            attachment.type = 'image/<png/jpeg/etc>' for images, 'video/<webm/mp4/etc>' for videos
+        '''
+        # if message.content.startswith('..ctype'):
+        #     m_id = message.content.split()[1]
+        #     msg = await message.channel.fetch_message(m_id)
+
+        #     if len(msg.attachments) != 0:
+        #         attachment = msg.attachments[0]
+            
+        #     await message.channel.send(attachment.content_type)
 
 client = PinClient()
 client.run(token)
