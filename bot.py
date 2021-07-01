@@ -20,5 +20,7 @@ class MyClient(discord.Client):
             external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
             await message.author.send('public ip: ' + external_ip)
 
+        if message.content.startswith('..mention'):
+            print(message.author.mention)
 client = MyClient()
 client.run(token)
