@@ -48,13 +48,23 @@ class TagClient(discord.Client):
             if mauth_id == self.id_one:
                 # send message content to tag two acct
                 # how do i get the tag two user?
+
+                attachments = []
+                for a in message.attachments:
+                    attachments.append(await a.to_file())
+
                 sending = await self.sexy_babeys.fetch_member(self.id_two)
-                await sending.send(message.content) 
+                await sending.send(message.content, files=attachments) 
 
             if mauth_id == self.id_two:
                 # send to tag one acct
+
+                attachments = []
+                for a in message.attachments:
+                    attachments.append(await a.to_file())
+
                 sending = await self.sexy_babeys.fetch_member(self.id_one)
-                await sending.send(message.content) 
+                await sending.send(message.content, files=attachments) 
 
 client = TagClient()
 client.run(token)
