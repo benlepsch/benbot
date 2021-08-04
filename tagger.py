@@ -33,14 +33,17 @@ class TagClient(discord.Client):
         if message.author.id == self.user.id:
             return
         
-        if self.tag_one in message.content and not self.tag_two in message.content:
-            await message.channel.send(self.tag_two + ' ^')
+        # Coment this out because i siwthced back to one discord acct
+        # if self.tag_one in message.content and not self.tag_two in message.content:
+        #     await message.channel.send(self.tag_two + ' ^')
         
         if self.tag_two in message.content and not self.tag_one in message.content:
-            await message.channel.send(self.tag_one + ' ^')
+            await message.channel.send('tag the other ben instead')
         
         # i use message.author.send(msg)
 
+        # also comment all of this dm forwarding out
+        """
         if isinstance(message.channel, discord.DMChannel):
 
             mauth_id = ''.join([i for i in list(message.author.mention) if i.isdigit()])
@@ -65,6 +68,6 @@ class TagClient(discord.Client):
 
                 sending = await self.sexy_babeys.fetch_member(self.id_one)
                 await sending.send(message.content, files=attachments) 
-
+        """
 client = TagClient()
 client.run(token)
