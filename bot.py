@@ -9,7 +9,7 @@ class MyClient(discord.Client):
         print(self.user.id)
         print('------------')
 
-        game = discord.Game('nitro boosting')
+        game = discord.Game('LEAGUE OF LEGENDSSS')
         await client.change_presence(status=discord.Status.online, activity=game)
 
     async def on_message(self, message):

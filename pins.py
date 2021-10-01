@@ -22,99 +22,52 @@ class PinClient(discord.Client):
                 self.pinning_channel = c
                 break
 
-    """
-        how will i make this
-        i think i'll hard code channels so that it'll be 
-        sexy babeys exclusive bot
-
-        so there will be a #pins channel 
-        and there will be a command ..pin <message id>
-        all the bot has to do is take the message contents and 
-        send it in the pins channel, plus who it's from
-        and a link to the original message below
-
-        like 
-
-        ZinkIThink: <message>
-        <original message link>
-
-
-        but i could see problems with the bot resending gifs
-        or images/videos or emoji
-
-        so let's take baby steps here and make a bot to re send
-        a message first
-    """
-
     async def on_message(self, message):
         if message.author.id == self.user.id:
             return
         
         if message.content.startswith('..online'):
             await message.channel.send('pin bot online')
-        
-        # # test method to make sure attachments/gifs work
-        # if message.content.startswith('..resend'):
-        #     # format: ..resend <message id>
-        #     # first step is make sure there actually is a message id
-        #     m_id = message.content.split()[1]
-        #     msg = await message.channel.fetch_message(m_id)
 
-        #     # get the list of attachments
-        #     attachments = []
-
-        #     # have to convert from type Attachemnt to type File for sending
-        #     for attached in msg.attachments:
-        #         attachments.append(await attached.to_file())
-
-        #     # send it back
-        #     await message.channel.send(msg.content, files=attachments)
-
-        # if message.content.startswith('..send_embed'):
-        #     embed = discord.Embed()
-        #     embed.add_field(name="vaughn!:", value="""use embeds actually\n\n[message link]({})""".format(message.jump_url), inline=False)
-        #     embed.set_image(url="https://media.discordapp.net/attachments/644752766736138241/855131201077248011/image0.png")
-        #     embed.set_footer(text='sent in channel "' + message.channel.name + '"')
-        #     await message.channel.send(embed=embed)
-
-        # real deal right here
         if message.content.startswith('..pin'):
+            # fetch message from id
             m_id = message.content.split()[1]
             msg = await message.channel.fetch_message(m_id)
 
-            attachment = None
-            a_type = ''
-            if len(msg.attachments) != 0:
-                attachment = msg.attachments[0]
-                a_type = attachment.content_type.split('/')[0]
+            # grab attachments
+            attachments = []
+            a_type = 'none'
+            if len(msg.attachments) == 1:
+                attachments.append(msg.attachments[0])
+                a_type = attachments[0].content_type.split('/')[0]
+            elif len(msg.attachments) >= 2:
+                for a in msg.attachments:
+                    attachments.append(a)
+                    if a.content_type.split('/')[0] == 'video':
+                        a_type = 'video'
 
-            
             sending_msg = '''{}\n\n[message link]({})'''.format(msg.content, msg.jump_url)
 
             embed = discord.Embed()
             embed.add_field(name=msg.author.display_name, value=sending_msg)
-
-            if attachment is not None and a_type == 'image':
-                embed.set_image(url=attachment)
-            
             embed.set_footer(text='sent in channel {}'.format(msg.channel.name))
 
-            if a_type == 'video':
-                await self.pinning_channel.send(embed=embed, files=[await attachment.to_file()])
+            if len(attachments) >= 2 or a_type == 'video':
+                f = []
+                print(attachments)
+                for a in attachments:
+                    f.append(await a.to_file())
+                print(f)
+                await self.pinning_channel.send(embed=embed, files=f)
+            elif len(attachments) == 1:
+                embed.set_image(url=attachments[0])
+                await self.pinning_channel.send(embed=embed)
             else:
                 await self.pinning_channel.send(embed=embed)
         
         '''
             attachment.type = 'image/<png/jpeg/etc>' for images, 'video/<webm/mp4/etc>' for videos
         '''
-        # if message.content.startswith('..ctype'):
-        #     m_id = message.content.split()[1]
-        #     msg = await message.channel.fetch_message(m_id)
-
-        #     if len(msg.attachments) != 0:
-        #         attachment = msg.attachments[0]
-            
-        #     await message.channel.send(attachment.content_type)
 
 client = PinClient()
 client.run(token)
