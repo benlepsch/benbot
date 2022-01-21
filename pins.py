@@ -8,6 +8,9 @@ class PinClient(discord.Client):
         print(self.user.id)
         print('-------------')
 
+        game = discord.Game('League of Legends')
+        await client.change_presence(status=discord.Status.online, activity=game)
+        
         self.pinning_channel_id = 855127902416273468
         self.guild_name = 'sexy babeys'
 
