@@ -1,5 +1,7 @@
 import discord, asyncio
-from token_folder import token
+from random import randint
+
+from config import token
 
 class PinClient(discord.Client):
     async def on_ready(self):
@@ -7,6 +9,14 @@ class PinClient(discord.Client):
         print(self.user.name)
         print(self.user.id)
         print('-------------')
+
+        self.paprika_gifs = [
+            'https://tenor.com/view/paprika-movie-anime-atsuko-chiba-satoshi-kon-gif-14134517',
+            'https://tenor.com/view/paprika-gif-5430367',
+            'https://tenor.com/view/paprika-gif-25394130',
+            'https://tenor.com/view/paprika-paprika-anime-gif-10413276',
+            'https://media.tenor.com/wxaaQuEOXQAAAAAC/anime-burger.gif'
+        ]
 
         game = discord.Game('League of Legends')
         await client.change_presence(status=discord.Status.online, activity=game)
@@ -28,6 +38,9 @@ class PinClient(discord.Client):
     async def on_message(self, message):
         if message.author.id == self.user.id:
             return
+        
+        if 'paprika' in message.content:
+            await message.channel.send(self.paprika_gifs[randint(0, len(self.paprika_gifs)-1)])
         
         if message.content.startswith('..online'):
             await message.channel.send('pin bot online')
@@ -74,6 +87,8 @@ class PinClient(discord.Client):
         '''
             attachment.type = 'image/<png/jpeg/etc>' for images, 'video/<webm/mp4/etc>' for videos
         '''
+        if randint(0, 5000) > 4998:
+            await message.channel.send('please kill me')
 
 client = PinClient()
 client.run(token)
