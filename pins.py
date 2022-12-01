@@ -31,6 +31,9 @@ class PinClient(discord.Client):
         
         if message.content.startswith('..online'):
             await message.channel.send('pin bot online')
+        
+        if message.content.startswith('..riddle'):
+            await message.channel.send('I end with ' + message.content[1:] + ' and start with ' + message.content[0] + '. What am I?')
 
         if message.content.startswith('..pin'):
             # fetch message from id
