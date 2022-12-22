@@ -83,7 +83,7 @@ class PinClient(discord.Client):
                 await self.pinning_channel.send(embed=embed)
             else:
                 await self.pinning_channel.send(embed=embed)
-        
+
         '''
             attachment.type = 'image/<png/jpeg/etc>' for images, 'video/<webm/mp4/etc>' for videos
         '''
