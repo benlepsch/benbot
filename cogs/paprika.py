@@ -1,5 +1,5 @@
-# fixlink.py
-# Simple cog to fix twitter, tiktok, and instagram links so they can embed properly into discord
+# paprika.py
+# auto sends paprika when theres a paprika
 from discord.ext import commands
 from random import randint
 
