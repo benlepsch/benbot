@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "benbot"
+version = "0.1.0"
+description = "mer your mn saskek yiolc"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+"discord.py" = "^2.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
