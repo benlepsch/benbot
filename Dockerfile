@@ -11,4 +11,4 @@ COPY . .
 RUN poetry install
 
 ENTRYPOINT ["poetry"]
-CMD ["run", "python", "-m", "bot"]
+CMD ["run", "python", "benbot.py"]
