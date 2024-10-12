@@ -13,11 +13,12 @@ class Paprika(commands.Cog):
             'https://tenor.com/view/paprika-paprika-anime-gif-10413276',
             'https://media.tenor.com/wxaaQuEOXQAAAAAC/anime-burger.gif'
         ]
-        self.user = 873414777064542268
+        # self.user = 873414777064542268
+        print('bot client id: {}'.format(self.bot.user.id))
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.id == self.user:
+        if message.author.id == self.bot.user.id:
             return
 
         if 'paprika' in message.content:
