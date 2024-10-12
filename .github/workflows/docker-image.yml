@@ -25,7 +25,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          push: ${{ github.ref == 'refs/heads/main' }}
+          push: ${{ github.ref == 'refs/heads/master' }}
           cache-from: type=registry,ref=ghcr.io/benlepsch/benbot:latest
           cache-to: type=inline
           tags: |
