@@ -25,7 +25,7 @@ class Paprika(commands.Cog):
             await message.channel.send(self.paprika_gifs[randint(0, len(self.paprika_gifs)-1)])
         
         if message.content.startswith('..online'):
-            await message.channel.send('pin bot online')
+            await message.channel.send('https://cdn.discordapp.com/attachments/644752766736138241/1298288977970860052/edited.gif?ex=67190555&is=6717b3d5&hm=dd254e50a59f6f10cfc7233bbbfbdca234a2a89df1304236462c55c271953eb7&')
             
         if message.content.startswith('..riddle'):
             await message.channel.send('I end with ' + ' '.join(message.content.split(' ')[1:])[1:] + ' and start with ' + message.content.split(' ')[1][0] + '. What am I?')
