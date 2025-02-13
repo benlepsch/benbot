@@ -11,6 +11,7 @@ import os
 
 GUILD = os.getenv('GUILD')
 PINS_CHANNEL = os.getenv('PINS_CHANNEL')
+YACHTS_CHANNEL = os.getenv('YACHTS_CHANNEL')
 
 class Pins(commands.Cog):
     
@@ -23,6 +24,8 @@ class Pins(commands.Cog):
                 callback=self.pin_ctx
             )
         self.bot.tree.add_command(self.pin_menu)
+
+        await self.guild.get_channel(int(YACHTS_CHANNEL)).send('awake')
     
     async def pin_ctx(self, interaction: discord.Interaction, msg: discord.Message):
         

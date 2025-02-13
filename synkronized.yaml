@@ -11,3 +11,5 @@ config:
       value: "644752766241341460"
     - name: "PINS_CHANNEL"
       value: "855127902416273468"
+    - name: "YACHTS_CHANNEL"
+      value: "644752766736138241"

@@ -13,6 +13,10 @@ class Paprika(commands.Cog):
             'https://tenor.com/view/paprika-paprika-anime-gif-10413276',
             'https://media.tenor.com/wxaaQuEOXQAAAAAC/anime-burger.gif'
         ]
+        self.remind_me_responses = [
+            'shut the fuck up',
+            'gargle my balls'
+        ]
         # self.user = 873414777064542268
         print('bot client id: {}'.format(self.bot.user.id))
 
@@ -31,7 +35,7 @@ class Paprika(commands.Cog):
             await message.channel.send('I end with ' + ' '.join(message.content.split(' ')[1:])[1:] + ' and start with ' + message.content.split(' ')[1][0] + '. What am I?')
 
         if 'Hey buddy! You know there\'s a feature for that... Why don\'t you try' in message.content:
-            await message.channel.send('shut the fuck up')
+            await message.channel.send(self.remind_me_responses[randint(0, len(self.remind_me_responses - 1))])
 
         if randint(0, 12000) == 128:
             await message.channel.send('please kill me')
