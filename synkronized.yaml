@@ -1,0 +1,13 @@
+synkronized:
+  name: benbot
+  template: single-container
+config:
+  size: small
+  vaultSecrets:
+    - name: "DISCORD_TOKEN"
+      path: "benbot/discord-token"
+  env:
+    - name: "GUILD"
+      value: "644752766241341460"
+    - name: "PINS_CHANNEL"
+      value: "855127902416273468"
