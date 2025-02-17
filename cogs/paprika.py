@@ -35,7 +35,7 @@ class Paprika(commands.Cog):
             await message.channel.send('I end with ' + ' '.join(message.content.split(' ')[1:])[1:] + ' and start with ' + message.content.split(' ')[1][0] + '. What am I?')
 
         if 'Hey buddy! You know there\'s a feature for that... Why don\'t you try' in message.content:
-            await message.channel.send(self.remind_me_responses[randint(0, len(self.remind_me_responses - 1))])
+            await message.channel.send(self.remind_me_responses[randint(0, len(self.remind_me_responses) - 1)])
 
         if randint(0, 12000) == 128:
             await message.channel.send('please kill me')
