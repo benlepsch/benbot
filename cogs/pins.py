@@ -19,6 +19,7 @@ class Pins(commands.Cog):
         self.bot = bot
         self.guild = bot.get_guild(int(GUILD))
         self.channel = self.guild.get_channel(int(PINS_CHANNEL))
+        self.yachts = self.guild.get_channel(int(YACHTS_CHANNEL))
         self.pin_menu = app_commands.ContextMenu(
                 name = "pin",
                 callback=self.pin_ctx
@@ -76,4 +77,4 @@ async def setup(bot: commands.Bot):
   await bot.add_cog(Pins(bot))
   print("[Pins]: Loaded")
 
-  await self.guild.get_channel(int(YACHTS_CHANNEL)).send('awake')
+  await self.yachts.send('awake')
