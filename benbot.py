@@ -83,7 +83,7 @@ async def on_ready():
     
         Runs as soon as the bot starts
     """
-    game = discord.Game('League of Legends')
+    game = discord.Game('Marvel Rivals')
     await client.change_presence(status=discord.Status.online, activity=game)
 
     print("[Benbot]: Loaded")
