@@ -77,4 +77,4 @@ async def setup(bot: commands.Bot):
   await bot.add_cog(Pins(bot))
   print("[Pins]: Loaded")
 
-  await self.yachts.send('awake')
+  await bot.yachts.send('awake')
