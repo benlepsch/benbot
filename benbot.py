@@ -42,4 +42,4 @@ class Benbot(commands.Bot):
 if __name__ == "__main__":
     intents = discord.Intents.all()
     client = Benbot(command_prefix="_", intents=intents)
-    client.start(os.getenv('DISCORD_TOKEN'))
+    client.run(os.getenv('DISCORD_TOKEN'))
