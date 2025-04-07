@@ -9,13 +9,6 @@ import discord
 from discord.ext import commands
 import os
 
-DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
-
-# Defines the bot intents and the client
-intents = discord.Intents.all()
-client = commands.Bot(command_prefix='_', intents=intents)
-
-
 class Benbot(commands.Bot):
     def __init__(self, *args, **kwargs):
         """Initialize the bot class"""
@@ -47,5 +40,6 @@ class Benbot(commands.Bot):
 
 
 if __name__ == "__main__":
-    client = Benbot()
-    client.start(DISCORD_TOKEN)
+    intents = discord.Intents.all()
+    client = Benbot(command_prefix="_", intents=intents)
+    client.start(os.getenv('DISCORD_TOKEN'))
