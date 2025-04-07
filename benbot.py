@@ -5,12 +5,9 @@ Revised, re-revised, peer reviewed, and ultimately shamed by Vaughn Woerpel
 "mer your mn saskek yiolc"
 - a wise hermit
 """
-
 import discord
 from discord.ext import commands
-from typing import Literal, Optional
 import os
-from discord.ext.commands import Greedy, Context
 
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 
@@ -18,76 +15,37 @@ DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 intents = discord.Intents.all()
 client = commands.Bot(command_prefix='_', intents=intents)
 
-@client.command()
-@commands.guild_only()
-@commands.is_owner()
-async def sync(
-  ctx: Context, guilds: Greedy[discord.Object], spec: Optional[Literal["~", "*", "^"]] = None) -> None:
-    r""" Loads messages into json files based on user-supplied dates
-        
-        Syncing to the command tree is important as this is how the guild populates itself with the discord app_commands.
 
-        ...
+class Benbot(commands.Bot):
+    def __init__(self, *args, **kwargs):
+        """Initialize the bot class"""
+        super().__init__(*args, **kwargs)
 
-        Parameters
-        -----------
-        ctx: Context
-            Command context object
-        guilds: Optional[discord.Object]
-            List of guilds
-        spec: Optional[Literal["~", "*", "^"]
-            Optional specification for what the sync command should do: sync the tree, copy the tree, or clear the tree.
-        """
+    async def load_extensions(self) -> None:
+        """Load all cogs by walking the packages in exts."""
+        print("Loading extensions")
+        for filename in os.listdir("./cogs"):
+            if filename.endswith(".py"):
+                await client.load_extension(f"cogs.{filename[:-3]}")
+        print("Extensions loaded")
 
-    if not guilds:
-        if spec == "~":
-            synced = await ctx.bot.tree.sync(guild=ctx.guild)
-        elif spec == "*":
-            ctx.bot.tree.copy_global_to(guild=ctx.guild)
-            synced = await ctx.bot.tree.sync(guild=ctx.guild)
-        elif spec == "^":
-            ctx.bot.tree.clear_commands(guild=ctx.guild)
-            await ctx.bot.tree.sync(guild=ctx.guild)
-            synced = []
-        else:
-            synced = await ctx.bot.tree.sync()
+    async def sync_app_commands(self) -> None:
+        """Sync the command tree to the guild"""
+        await self.tree.sync()
+        await self.tree.sync(guild=discord.Object(os.getenv('GUILD')))
 
-        await ctx.send(
-            f"Synced {len(synced)} commands {'globally' if spec is None else 'to the current guild.'}"
-        )
-        return
+        print("Command tree synced")
 
-    ret = 0
-    for guild in guilds:
-        try:
-            await ctx.bot.tree.sync(guild=guild)
-        except discord.HTTPException:
-            pass
-        else:
-            ret += 1
-    print("[Benbot]: Commands synced")
-    await ctx.send(f"Synced the tree to {ret}/{len(guilds)}.")
+    async def setup_hook(self) -> None:
+        """Replacing default setup_hook to run on startup"""
+        await self.load_extensions()
+        await self.sync_app_commands()
+        game = discord.Game('Marvel Rivals')
+        await self.change_presence(status=discord.Status.online, activity=game)
 
-async def load_cogs():
-    """ Loads all of the cogs in the /cogs directory.
-    
-        Cogs allow for a more streamlined process of managing a large bot.
-    """
-    for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
-            await client.load_extension(f"cogs.{filename[:-3]}")
+        print("[Benbot]: Loaded")
 
-@client.event
-async def on_ready():
-    """ Discord client event for when the bot is ready
-    
-        Runs as soon as the bot starts
-    """
-    game = discord.Game('Marvel Rivals')
-    await client.change_presence(status=discord.Status.online, activity=game)
 
-    print("[Benbot]: Loaded")
-    await load_cogs()
-    
-
-client.run(DISCORD_TOKEN)
+if __name__ == "__main__":
+    client = Benbot()
+    client.start(DISCORD_TOKEN)
